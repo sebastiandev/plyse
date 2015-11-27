@@ -1,0 +1,54 @@
+grammar:
+
+  term_parser:
+    class: plyse.term_parser.TermParser
+    integer_as_string: False
+    default_fields: []
+    aliases: {}
+
+  operators:
+    not:
+      implicit: False
+      symbols:
+        - 'not'
+        - '-'
+        - '!'
+    and:
+      implicit: False
+      symbols:
+        - 'and'
+        - '+'
+    or:
+      implicit: True
+      symbols:
+        - 'or'
+
+  keywords:
+    is:
+      - important
+      - critical
+
+  term:
+    field:
+      class: plyse.expressions.primitives.Field
+      precedence: 10
+      parse_method: field_parse
+
+    values:
+      - class: plyse.expressions.primitives.PartialString
+        precedence: 3
+        parse_method: partial_string_parse
+
+      - class: plyse.expressions.primitives.QuotedString
+        precedence: 2
+        parse_method: quoted_string_parse
+
+      - class: plyse.expressions.primitives.Integer
+        precedence: 4
+        parse_method: integer_parse
+
+      - class: plyse.expressions.primitives.IntegerRange
+        precedence: 5
+        range_parse_method: range_parse
+        item_parse_method: integer_parse
+
