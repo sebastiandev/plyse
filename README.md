@@ -30,7 +30,7 @@ For the curious ones, first we will explain the basic terminology:
 
 - **Operand**: Items where the operators operate on, for example: 'this' OR 'that'. *This* and *that* are the operands of the **OR** operator.
 
-To sum up, then if we have a grammar that lets us search for users by their name, you could come up with this query:
+To sum up, if we have a grammar that lets us search for users by their name, you could come up with this query:
 
 ` name: 'Peter' or name:'Mary' `
 There you have an **OR** operator with 2 *operands* made up by *terms*. Simple right?
@@ -71,7 +71,7 @@ new_query.query_from_stack(level=1)  # returns the query with age filter
 > Query objects are immutable, so every method that modfies the object returns a new instance.
 
 ## Traversing query trees
-A query tree is a composition of **TreeNodes**, which defines the basic interface for nodes. A node can be of type **Operator** or **Operand**. Query trees are binary trees (almost, 'Not' operator have only one input/child) so every node is an **Operator** that has childs/inputs and every leaf is an **Operand** which is a representation of a query **Term**. You can traverse the tree by asking for the node's children, checking if is a leaf.
+A query tree is a composition of **TreeNodes**, which defines the basic interface for nodes. A node can be of type **Operator** or **Operand**. Query trees are binary trees (almost true except for 'Not' operator which has only one input/child) so every node is an **Operator** that has childs/inputs and every leaf is an **Operand** which is a representation of a query **Term**. You can traverse the tree by asking for the node's children, checking if is a leaf.
 You can also ask for all the leafs of a particular node.
 
 ```python
