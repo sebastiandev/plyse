@@ -33,7 +33,7 @@ class GrammarFactory(object):
         term_parser = TermParserFactory.build_from_conf(conf['term_parser'])
 
         if 'operators' in conf:
-            for key, op_def in conf['operators'].iteritems():
+            for key, op_def in iter(conf['operators'].items()):
                 operators.append(Operator(key, op_def['symbols'], op_def['implicit']))
 
         if 'term' in conf:
@@ -46,7 +46,7 @@ class GrammarFactory(object):
 
         if 'keywords' in conf:
             keywords = [KeywordTerm(keyword_name=key, possible_values=values, parse_method=term_parser.keyword_parse)
-                        for key, values in conf['keywords'].iteritems()]
+                        for key, values in iter(conf['keywords'].items())]
 
         return Grammar(operators=operators, term=term, keywords=keywords, term_parser=term_parser)
 
