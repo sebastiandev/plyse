@@ -7,7 +7,7 @@ from plyse.expressions.primitives import *
 class PrimitiveTester(unittest.TestCase):
 
     def assert_parsed_output(self, primitive, input_expected_val_dict):
-        for inp, exp in input_expected_val_dict.iteritems():
+        for inp, exp in iter(input_expected_val_dict.items()):
             if exp:
                 output = primitive.parseString(inp)
                 for n, o in enumerate(output):
