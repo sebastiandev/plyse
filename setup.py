@@ -11,7 +11,7 @@ setup(
     description=('A fully extensible query parser inspired on the lucene and gmail sintax'),
     license='MIT',
     packages=['clipton'],
-    test_suite='',
+    test_suite='tests',
     keywords="search query parser lucene gmail syntax grammar",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
