@@ -3,7 +3,7 @@ from setuptools import setup
 
 # Dynamically calculate the version based on plyse.VERSION.
 setup(
-    name='clipton',
+    name='plyse',
     version=__import__('plyse').__version__,
     url='https://github.com/sebastiandev/plyse',
     author='Sebastian Packmann',
@@ -12,7 +12,7 @@ setup(
     license='MIT',
     packages=['clipton'],
     test_suite='',
-    keywords="clipboard test testing automation",
+    keywords="search query parser lucene gmail syntax grammar",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Win32 (MS Windows)',
