@@ -96,7 +96,7 @@ class QueryParser(object):
             s = str(term.value)
         else:
             # We are reverting the query to string, we have the already aliased fields and we want the original ones
-            aliases = {v: k for k, v in self._grammar.term_parser.aliases.iteritems()}
+            aliases = {v: k for k, v in iter(self._grammar.term_parser.aliases.items())}
             field = aliases[term.field] if term.field in aliases else term.field
             value = "%s..%s" % (term.value[0], term.value[1]) if type(term.value) is list else term.value
             s = "%s:%s" % (field, value)
