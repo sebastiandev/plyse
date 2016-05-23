@@ -1,4 +1,5 @@
-![Plyse, ask gently, ask properly](https://github.com/sebastiandev/plyse/raw/master/logo.png)
+![Plyse, ask gently, ask properly](https://github.com/sebastiandev/plyse/raw/master/logo.png)  [![Build Status](https://travis-ci.org/sebastiandev/plyse.svg?branch=master)](https://travis-ci.org/sebastiandev/plyse)
+
 
 **Plyse** is a query parser inspired on the lucene and gmail sintax, fully extensible and configurable, that lets you focus on making the backend find what the user wants without worring about parsing user queries, defining sintax and query trees.
 
