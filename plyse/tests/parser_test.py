@@ -24,7 +24,7 @@ class QueryParserTester(unittest.TestCase):
 
     def test_simple_negated_partial_text(self):
         r = self.init_and_parse("-texto")
-        print r, type(r)
+        
         self.assertTrue(isinstance(r, Not))
         for operand in r.inputs:
             self.assertEqual(operand.field, "default")
