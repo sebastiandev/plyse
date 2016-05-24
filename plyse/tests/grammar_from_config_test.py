@@ -9,20 +9,20 @@ conf = {
     'term_parser': 'plyse.term_parser.TermParser',
     'default_fields': ['default'],
     'aliases': {},
-    'operators': {
-        'not': {
+    'operators': [ 
+        {'not': {
             'implicit': False,
             'symbols': ['not', '-', '!']
-        },
-        'and': {
+        }},
+        {'and': {
             'implicit': False,
             'symbols': ['and', '+', '&&']
-        },
-        'or': {
+        }},
+        {'or': {
             'implicit': True,
             'symbols': ['or']
-        }
-    },
+        }}
+    ],
     'keywords': {
         'has': ['notifications'],
         'is': ['important']

@@ -33,8 +33,10 @@ class GrammarFactory(object):
         term_parser = TermParserFactory.build_from_conf(conf['term_parser'])
 
         if 'operators' in conf:
-            for key, op_def in iter(conf['operators'].items()):
-                operators.append(Operator(key, op_def['symbols'], op_def['implicit']))
+            for op_def in conf['operators']:
+                key = list(op_def.keys())[0]
+                op_ = list(op_def.values())[0]
+                operators.append(Operator(key, op_['symbols'], op_['implicit']))
 
         if 'term' in conf:
             field = PrimitiveFactory.build_from_conf(conf['term']['field'], term_parser)
@@ -138,11 +140,11 @@ class Grammar(object):
         return self
 
     def remove_operator(self, operator_name):
-        self._update_grammar(operators=filter(lambda x: x.name != operator_name, self._operators))
+        self._update_grammar(operators=list(filter(lambda x: x.name != operator_name, self._operators)))
         return self
 
     def remove_keyword(self, keyword_name):
-        self._update_grammar(keywords=filter(lambda x: x.name != keyword_name, self._keywords))
+        self._update_grammar(keywords=list(filter(lambda x: x.name != keyword_name, self._keywords)))
         return self
 
     def parse(self, input_string, fail_if_syntax_missmatch=False):

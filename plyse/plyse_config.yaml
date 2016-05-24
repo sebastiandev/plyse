@@ -7,21 +7,21 @@ grammar:
     aliases: {}
 
   operators:
-    not:
-      implicit: False
-      symbols:
-        - 'not'
-        - '-'
-        - '!'
-    and:
-      implicit: False
-      symbols:
-        - 'and'
-        - '+'
-    or:
-      implicit: True
-      symbols:
-        - 'or'
+    - not:
+        implicit: False
+        symbols:
+          - 'not'
+          - '-'
+          - '!'
+    - and:
+        implicit: False
+        symbols:
+          - 'and'
+          - '+'
+    - or:
+        implicit: True
+        symbols:
+          - 'or'
 
   keywords:
     is:
