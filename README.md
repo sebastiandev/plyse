@@ -1,9 +1,9 @@
 ![Plyse, ask gently, ask properly](https://github.com/sebastiandev/plyse/raw/master/logo.png)  [![Build Status](https://travis-ci.org/sebastiandev/plyse.svg?branch=master)](https://travis-ci.org/sebastiandev/plyse)
 
 
-**Plyse** is a query parser inspired on the lucene and gmail sintax, fully extensible and configurable, that lets you focus on making the backend find what the user wants without worring about parsing user queries, defining sintax and query trees.
+**Plyse** is a query parser inspired on the lucene and gmail syntax, fully extensible and configurable, that lets you focus on making the backend find what the user wants without worring about parsing user queries, defining syntax and query trees.
 
-**Plyse** is based on [pyParsing](http://pyparsing.wikispaces.com/), it comes with a default sintax and lets you configure and extend it. There is also a default formatter for the output of the parsed query, and of course it lets you extend it to fit your needs. Every query is converted into a binary tree of operands and operators that is easy to iterate and do whatever you need to to with a user query.
+**Plyse** is based on [pyParsing](http://pyparsing.wikispaces.com/), it comes with a default syntax and lets you configure and extend it. There is also a default formatter for the output of the parsed query, and of course it lets you extend it to fit your needs. Every query is converted into a binary tree of operands and operators that is easy to iterate and do whatever you need to to with a user query.
 
 
 
@@ -21,7 +21,7 @@ query = parser.parse("hello world")
 
 For the curious ones, first we will explain the basic terminology:
 
-- **Gramar**: Usually you want to allow the user to search for data on you application. Sometimes plain text search is not enough and you want to give the user more control and flexibility. So you need to define a grammar which is basically a set of rules that defines the sintax for the user queries. Like gmail's search for example, that lets you do `'in:inbox'` or `'from:foo@gmail.com'`, etc. Here **in** and **from** are the fields where the user search will take place, the colon (**:**) delimits the field to be search and the value that field should contain. Of course you could define different types of field values or operators to make more complex queries. 
+- **Gramar**: Usually you want to allow the user to search for data on you application. Sometimes plain text search is not enough and you want to give the user more control and flexibility. So you need to define a grammar which is basically a set of rules that defines the syntax for the user queries. Like gmail's search for example, that lets you do `'in:inbox'` or `'from:foo@gmail.com'`, etc. Here **in** and **from** are the fields where the user search will take place, the colon (**:**) delimits the field to be search and the value that field should contain. Of course you could define different types of field values or operators to make more complex queries. 
 
 - **Term**: Is what a user query is made of, 'from:foo@gmail.com' is a term, defined by a field **from** and its value **foo@gmail.com**. Since fields sort of represent you model's data attributes, you probably have different kind of types. Like text, ints, maybe email, etc; So a Term definition consists on representing those types as possible values for the field. You could think of it as something like: `Field: <integer> | <email> | <string> | <quotes string>`.  Remember that, behind the scenes, these are pyparsing expressions that define matching patterns, so everything can be think of as a huge regular expression.
 
@@ -103,7 +103,7 @@ print len(query.query_as_tree.leafs)
 ```
 
 ## Gammars and custom setups
-A grammar is a set of rules that make up your query sintax. Those rules involve defining the types of values that the query expression will accept, they way they are supposed to be expressed and how they are combined to build up the grammar.
+A grammar is a set of rules that make up your query syntax. Those rules involve defining the types of values that the query expression will accept, they way they are supposed to be expressed and how they are combined to build up the grammar.
 
 A user query is a combination of terms. Terms can be simple text or can define exactly where the desired value has to be searched, like in a particular field or attribute. 
 
