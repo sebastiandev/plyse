@@ -273,7 +273,7 @@ grammar.value_types
 #  {'precedence': 2, 'type': 'quoted_string'}]
 
 grammar.remove_type('integer_range')
-grammar.add_value_type(IntegerComparison(grammar.term_parse.integer_comparison_parse))
+grammar.add_value_type(IntegerComparison(grammar.term_parser.integer_comparison_parse))
 
 parser = QueryParser(grammar)
 q = qp.parse("age:>18")
