@@ -10,7 +10,7 @@ setup(
     author_email='devsebas@gmail.com',
     description=('A fully extensible query parser inspired on the lucene and gmail sintax'),
     license='MIT',
-    packages=['clipton'],
+    packages=['plyse'],
     test_suite='tests',
     keywords="search query parser lucene gmail syntax grammar",
     classifiers=[
