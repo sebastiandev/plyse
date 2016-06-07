@@ -43,10 +43,7 @@ class Operand(TreeNode):
             raise AttributeError("Operand doesn't have an attribute named '%s'" % name)
 
     def __setattr__(self, name, val):
-        if name in self:
-            self[name] = val
-        else:
-            raise AttributeError("Operand doesn't have an attribute named '%s'" % name)
+        self[name] = val
 
     @property
     def is_leaf(self):
