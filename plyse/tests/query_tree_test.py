@@ -14,7 +14,7 @@ class QueryTreeTester(unittest.TestCase):
         o = Operand(**self.o1)
         self.assertTrue(o.is_leaf)
         self.assertEqual([], o.children)
-        self.assertEqual(self.o1, o.leafs()[0])
+        self.assertEqual(self.o1, o.leaves()[0])
 
     def assert_node(self, op):
         self.assertTrue(not op.is_leaf)
@@ -31,7 +31,7 @@ class QueryTreeTester(unittest.TestCase):
             self.assertEqual(self.o2, op.children[1])
 
             op.add_input(Operand(**self.o1))
-            self.assertEqual(3, len(op.leafs()))
+            self.assertEqual(3, len(op.leaves()))
             self.assertEqual(Operand, type(op.children[0]))
             self.assertEqual(type(op), type(op.children[1]))
 

@@ -22,11 +22,11 @@ class TreeNode(dict):
 
         raise NotImplementedError()
 
-    def leafs(self, *args, **kwargs):
+    def leaves(self, *args, **kwargs):
         """
-        Returns all leafs from the current node
+        Returns all leaves from the current node
 
-        :return a list of leafs
+        :return a list of leaves
         """
         raise NotImplementedError()
 
@@ -42,6 +42,12 @@ class Operand(TreeNode):
         else:
             raise AttributeError("Operand doesn't have an attribute named '%s'" % name)
 
+    def __setattr__(self, name, val):
+        if name in self:
+            self[name] = val
+        else:
+            raise AttributeError("Operand doesn't have an attribute named '%s'" % name)
+
     @property
     def is_leaf(self):
         return True
@@ -50,7 +56,7 @@ class Operand(TreeNode):
     def children(self, *args, **kwargs):
         return []
 
-    def leafs(self, *args, **kwargs):
+    def leaves(self, *args, **kwargs):
         return [self]
 
 
@@ -109,23 +115,23 @@ class Operator(TreeNode):
     def inputs(self):
         return self._operands
 
-    def leafs(self, ignore_negated=False, *args, **kwargs):
-        return self._do_leafs(self, ignore_negated)
+    def leaves(self, ignore_negated=False, *args, **kwargs):
+        return self._do_leaves(self, ignore_negated)
 
-    def _do_leafs(self, operand, ignore_negated):
+    def _do_leaves(self, operand, ignore_negated):
         if operand.is_leaf:
             return [operand]
 
         elif isinstance(operand, Not) and ignore_negated:
             return []
 
-        leafs = []
-        leafs.extend(self._do_leafs(operand.inputs[0], ignore_negated))
+        leaves = []
+        leaves.extend(self._do_leaves(operand.inputs[0], ignore_negated))
 
         if len(operand.inputs) > 1:
-            leafs.extend(self._do_leafs(operand.inputs[1], ignore_negated))
+            leaves.extend(self._do_leaves(operand.inputs[1], ignore_negated))
 
-        return leafs
+        return leaves
 
     def __str__(self):
         return "[TreeNode] '{op}' operator with {children} children ".format(op=self.type.upper(), children=len(self.children))

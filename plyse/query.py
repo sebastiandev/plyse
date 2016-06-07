@@ -67,7 +67,7 @@ class Query(object):
         return self._raw_query
 
     def terms(self, ignore_negated=False):
-        return self._query_tree.leafs(ignore_negated)
+        return self._query_tree.leaves(ignore_negated)
 
     def query_from_stack(self, level):
         """
