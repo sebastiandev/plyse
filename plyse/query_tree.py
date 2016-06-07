@@ -30,6 +30,12 @@ class TreeNode(dict):
         """
         raise NotImplementedError()
 
+    def traverse(self, node_callback=lambda node: node, leaf_callback=lambda node: node):
+        """
+        Traverse the tree and for each node or leaf calls the corresponding callback
+        """
+        raise NotImplementedError()
+
 
 class Operand(TreeNode):
 
@@ -113,22 +119,26 @@ class Operator(TreeNode):
         return self._operands
 
     def leaves(self, ignore_negated=False, *args, **kwargs):
-        return self._do_leaves(self, ignore_negated)
-
-    def _do_leaves(self, operand, ignore_negated):
-        if operand.is_leaf:
-            return [operand]
-
-        elif isinstance(operand, Not) and ignore_negated:
-            return []
-
         leaves = []
-        leaves.extend(self._do_leaves(operand.inputs[0], ignore_negated))
-
-        if len(operand.inputs) > 1:
-            leaves.extend(self._do_leaves(operand.inputs[1], ignore_negated))
-
+        self.traverse(ignore_negated=ignore_negated, leaf_callback=lambda leaf: leaves.append(leaf))
         return leaves
+
+    def traverse(self, node_callback=lambda node: node, leaf_callback=lambda leaf: leaf, ignore_negated=False):
+        def _do_traverse(operand):
+            if operand.is_leaf:
+                leaf_callback(operand)
+
+            elif isinstance(operand, Not) and ignore_negated:
+                pass
+
+            else:
+                node_callback(operand)
+                _do_traverse(operand.inputs[0])
+
+                if len(operand.inputs) > 1:
+                    _do_traverse(operand.inputs[1])
+
+        return _do_traverse(self)
 
     def __str__(self):
         return "[TreeNode] '{op}' operator with {children} children ".format(op=self.type.upper(), children=len(self.children))
