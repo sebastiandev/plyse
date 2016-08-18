@@ -4,7 +4,13 @@ from setuptools import setup
 # Dynamically calculate the version based on plyse.VERSION.
 setup(
     name='plyse',
-    version=__import__('plyse').__version__,
+    setup_requires = [
+    'pyparsing',
+    ],
+    install_requires = [
+    'pyparsing',
+    ],
+    version='1.0.1',
     url='https://github.com/sebastiandev/plyse',
     author='Sebastian Packmann',
     author_email='devsebas@gmail.com',
