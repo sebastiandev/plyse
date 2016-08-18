@@ -4,18 +4,18 @@ from setuptools import setup
 # Dynamically calculate the version based on plyse.VERSION.
 setup(
     name='plyse',
-    version=__import__('plyse').__version__,
-    url='https://github.com/sebastiandev/plyse',
-    author='Sebastian Packmann',
-    author_email='devsebas@gmail.com',
-    description=('A fully extensible query parser inspired on the lucene and gmail sintax'),
-    license='MIT',
     setup_requires = [
     'pyparsing',
     ],
     install_requires = [
     'pyparsing',
     ],
+    version=__import__('plyse').__version__,
+    url='https://github.com/sebastiandev/plyse',
+    author='Sebastian Packmann',
+    author_email='devsebas@gmail.com',
+    description=('A fully extensible query parser inspired on the lucene and gmail sintax'),
+    license='MIT',
     package_dir={
         'plyse': 'plyse',
         'plyse.expressions': 'plyse/expressions',
