@@ -36,10 +36,10 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    install_requires = [
+    setup_requires = [
     'pyparsing',
     ],
-    setup_requires = [
+    install_requires = [
     'pyparsing',
     ],
 )
