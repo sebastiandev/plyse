@@ -10,6 +10,12 @@ setup(
     author_email='devsebas@gmail.com',
     description=('A fully extensible query parser inspired on the lucene and gmail sintax'),
     license='MIT',
+    setup_requires = [
+    'pyparsing',
+    ],
+    install_requires = [
+    'pyparsing',
+    ],
     package_dir={
         'plyse': 'plyse',
         'plyse.expressions': 'plyse/expressions',
@@ -35,11 +41,5 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-    ],
-    setup_requires = [
-    'pyparsing',
-    ],
-    install_requires = [
-    'pyparsing',
     ],
 )
