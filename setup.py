@@ -1,16 +1,23 @@
 from setuptools import setup
 
 
-# Dynamically calculate the version based on plyse.VERSION.
+def get_version(package):
+    """
+    Return package version as listed in `__version__` in `init.py`.
+    """
+    init_py = open(os.path.join(package, '__init__.py')).read()
+    return re.search("^__version__ = ['\"]([^'\"]+)['\"]", init_py, re.MULTILINE).group(1)
+
+
 setup(
     name='plyse',
-    setup_requires = [
-    'pyparsing',
+    setup_requires=[
+        'pyparsing',
     ],
-    install_requires = [
-    'pyparsing',
+    install_requires=[
+        'pyparsing',
     ],
-    version='1.0.1',
+    version=get_version('plyse'),
     url='https://github.com/sebastiandev/plyse',
     author='Sebastian Packmann',
     author_email='devsebas@gmail.com',

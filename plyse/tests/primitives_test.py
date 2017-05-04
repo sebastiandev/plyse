@@ -79,5 +79,9 @@ class PrimitiveTester(unittest.TestCase):
         ic = IntegerComparison()
         self.assert_parsed_output(ic, {'<10': ['<', '10'], '<=10': ['<=', '10'], '>10': ['>', '10'], '>=10': ['>=', '10'], '">e"': None})
 
+    def test_string_proximity(self):
+        sp = StringProximity()
+        self.assert_parsed_output(sp, {"'hello world'~3": ['hello world', '~', '3']})
+
 if __name__ == '__main__':
     unittest.main()

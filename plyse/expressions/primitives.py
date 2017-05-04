@@ -206,3 +206,15 @@ class MultiField(OneOrMore, BaseType):
 
         if parse_method:
             self.addParseAction(parse_method)
+
+
+class StringProximity(And, BaseType):
+
+    name = 'string_proximity'
+
+    def __init__(self, parse_method=None, precedence=11):
+        And.__init__(self, QuotedString() + Literal('~') + Integer())
+        BaseType.__init__(self, precedence)
+
+        if parse_method:
+            self.addParseAction(parse_method)

@@ -34,7 +34,7 @@ class TermParser(object):
 
     def __init__(self, default_fields=['default'], aliases=None, integer_as_string=False):
         self._default_fields = default_fields
-        self._field_name_aliases = aliases if aliases else []
+        self._field_name_aliases = aliases if aliases else {}
         self._integers_as_string = integer_as_string
 
     def _build_field_data(self, field_values, field_type):
@@ -108,7 +108,7 @@ class TermParser(object):
             fields = [f for f in "".join(tokens).split(":") if f]
             t = fields if len(fields) > 1 else fields[0]
 
-            field_value = self._field_name_aliases[t] if t in self._field_name_aliases else t
+            field_value = self._field_name_aliases.get(t, t)
 
             return self._build_field_data(field_value, Term.ATTRIBUTE)
 
