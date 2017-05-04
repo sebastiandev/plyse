@@ -1,3 +1,5 @@
+import os
+import re
 from setuptools import setup
 
 
@@ -33,9 +35,6 @@ setup(
     keywords="search query parser lucene gmail syntax grammar",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
-        'Environment :: Win32 (MS Windows)',
-        'Environment :: X11 Applications',
-        'Environment :: OSX Applications',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
