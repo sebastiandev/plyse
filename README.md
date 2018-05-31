@@ -89,10 +89,10 @@ print query.query_as_tree
 
 # [TreeNode] 'OR' operator with 2 children
 
-print query.query_as_tree.input[0]
+print query.query_as_tree.inputs[0]
 # {'field': 'name',  'field_type': 'attribute',  'val': 'peter',  'val_type': 'partial_string'}
 
-print query.query_as_tree.input[0]
+print query.query_as_tree.inputs[1]
 # {'field': 'name',  'field_type': 'attribute',  'val': 'mary',  'val_type': 'partial_string'}
 ```
 **Operators** have some extra methods you can query to find out if it supports left and right operands, the name of the Operator and so on. **Operands** can be treated as dicts.
