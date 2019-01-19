@@ -15,27 +15,31 @@ class QueryParser(object):
     def __init__(self, grammar):
         self._grammar = grammar
 
-    def parse(self, query_string):
+    def parse(self, query_string, fail_if_syntax_mismatch=False):
         """
         Runs the query through the grammar and transforms the results into a boolean
-        tree of operators and operands.
-        
+        tree of operators and operands. Will raise ParseExceptopm if fail_if_syntax_mismatch
+        is set and the full input can't be parsed.
+
         Grammar parse result should be a concatenation of lists where the elements/leafs
         are :class:Term 's representing the properties of each defined grammar element
         matched in the query string
         """
-        return Query(self.parse_elements(self._grammar.parse(query_string)), raw_query=query_string)
+        return Query(
+            self.parse_elements(self._grammar.parse(query_string, fail_if_syntax_mismatch)),
+            raw_query=query_string
+        )
 
     def parse_elements(self, elements, stack=None):
         if not elements:
             return deepcopy(stack.pop()) if stack else None
-        
+
         stack = [] if not stack else stack
 
         e = elements[0]
         if type(e) is str and e.lower() in [And.type, Or.type, Not.type]:
             op = OperatorFactory.create(e)
-            
+
             if op.has_left_operand():
                 op.add_input(stack.pop())
 
@@ -59,14 +63,14 @@ class QueryParser(object):
                     # finishing the cicle and leaving the stack with only one element (an operator)
                     if stack:
                         current_elem = stack.pop().add_input(current_elem)
-                    
+
                     stack.append(current_elem)
 
             else:
                 msg = """The previous element of an operand should be None or another Operand.
                       The inputted parse result is invalid! Type '{type}', Stack: {stack}"""
                 raise QueryParserError(msg.format(type=type(stack[-1]), stack=stack))
-            
+
         return self.parse_elements(elements[1:], stack)
 
     def stringify(self, query):
