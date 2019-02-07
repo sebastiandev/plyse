@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+from plyse.expressions.primitives import ParseException
 from plyse.grammar import GrammarFactory
-from plyse.parser import QueryParser 
+from plyse.parser import QueryParser
 from plyse.term_parser import Term
 from plyse.query_tree import Operand, And, Or, Not
 
 
 class QueryParserTester(unittest.TestCase):
 
-    def init_and_parse(self, input_str):
+    def init_and_parse(self, input_str, fail_if_syntax_mismatch=False):
         qp = QueryParser(GrammarFactory.build_default())
         self.assert_(qp.parse(input_str))
-        return qp.parse(input_str).query_as_tree
+        return qp.parse(input_str, fail_if_syntax_mismatch).query_as_tree
 
     def test_simple_partial_text(self):
         r = self.init_and_parse("texto")
@@ -24,7 +25,7 @@ class QueryParserTester(unittest.TestCase):
 
     def test_simple_negated_partial_text(self):
         r = self.init_and_parse("-texto")
-        
+
         self.assertTrue(isinstance(r, Not))
         for operand in r.inputs:
             self.assertEqual(operand.field, "default")
@@ -128,6 +129,10 @@ class QueryParserTester(unittest.TestCase):
         self.assertEqual(or_op.inputs[1].field, "c")
         self.assertEqual(or_op.inputs[1].val, "another")
         self.assertEqual(or_op.inputs[1].val_type, Term.PARTIAL_STRING)
+
+    def test_fail_if_syntax_mismatch(self):
+        with self.assertRaises(ParseException):
+            self.init_and_parse('aa*', True)
 
 if __name__ == "__main__":
     unittest.main(verbosity=3)

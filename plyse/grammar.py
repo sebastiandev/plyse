@@ -147,5 +147,5 @@ class Grammar(object):
         self._update_grammar(keywords=list(filter(lambda x: x.name != keyword_name, self._keywords)))
         return self
 
-    def parse(self, input_string, fail_if_syntax_missmatch=False):
-        return self._grammar_parser(input_string, parseAll=fail_if_syntax_missmatch)
+    def parse(self, input_string, fail_if_syntax_mismatch=False):
+        return self._grammar_parser(input_string, parseAll=fail_if_syntax_mismatch)
