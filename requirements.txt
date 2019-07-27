@@ -1,1 +1,1 @@
-pyparsing
+pyparsing==2.4.0
