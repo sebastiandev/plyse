@@ -10,7 +10,7 @@ setup(
     install_requires = [
     'pyparsing==2.4.0',
     ],
-    version='1.0.1',
+    version='1.0.2',
     url='https://github.com/sebastiandev/plyse',
     author='Sebastian Packmann',
     author_email='devsebas@gmail.com',
