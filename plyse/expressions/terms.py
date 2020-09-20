@@ -42,7 +42,7 @@ class KeywordTerm(And):
         if allow_other_values:
             _values ^= SimpleWord()
 
-        super(KeywordTerm, self).__init__(CaselessKeyword(keyword_name) + Literal(separator) + _values)
+        super(KeywordTerm, self).__init__([CaselessKeyword(keyword_name) + Literal(separator) + _values])
 
         self.name = keyword_name
         self.values = possible_values

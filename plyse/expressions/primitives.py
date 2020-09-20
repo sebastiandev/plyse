@@ -165,7 +165,7 @@ class IntegerComparison(And, BaseType):
 
     def __init__(self, parse_method=None, precedence=9):
         gt_lt_e = Literal('<') ^ Literal("<=") ^ Literal('>') ^ Literal(">=")
-        And.__init__(self, gt_lt_e + Integer())
+        And.__init__(self, [gt_lt_e + Integer()])
         BaseType.__init__(self, precedence)
 
         if parse_method:
@@ -177,7 +177,7 @@ class IntegerRange(And, BaseType):
     name = 'integer_range'
 
     def __init__(self, range_parse_method=None, item_parse_method=None, range_symbol='..', precedence=10):
-        And.__init__(self, Integer(item_parse_method) + Literal(range_symbol) + Integer(item_parse_method))
+        And.__init__(self, [Integer(item_parse_method) + Literal(range_symbol) + Integer(item_parse_method)])
         BaseType.__init__(self, precedence)
 
         if range_parse_method:
@@ -189,7 +189,7 @@ class Field(And, BaseType):
     name = 'field'
 
     def __init__(self, parse_method=None, field_separator=':', precedence=11):
-        And.__init__(self, FieldName() + Literal(field_separator))
+        And.__init__(self, [FieldName() + Literal(field_separator)])
         BaseType.__init__(self, precedence)
 
         if parse_method:
@@ -213,7 +213,7 @@ class StringProximity(And, BaseType):
     name = 'string_proximity'
 
     def __init__(self, parse_method=None, precedence=11):
-        And.__init__(self, QuotedString() + Literal('~') + Integer())
+        And.__init__(self, [QuotedString() + Literal('~') + Integer()])
         BaseType.__init__(self, precedence)
 
         if parse_method:
