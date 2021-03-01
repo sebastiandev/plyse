@@ -12,7 +12,7 @@ class QueryParserTester(unittest.TestCase):
 
     def init_and_parse(self, input_str, fail_if_syntax_mismatch=False):
         qp = QueryParser(GrammarFactory.build_default())
-        self.assert_(qp.parse(input_str))
+        self.assertTrue(qp.parse(input_str))
         return qp.parse(input_str, fail_if_syntax_mismatch).query_as_tree
 
     def test_simple_partial_text(self):

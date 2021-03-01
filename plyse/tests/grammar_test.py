@@ -12,7 +12,7 @@ class GrammarTester(unittest.TestCase):
 
     def _init_and_parse(self, input_str):
         g = self._build_grammar()
-        self.assert_(g.parse(input_str, True))
+        self.assertTrue(g.parse(input_str, True))
         return g.parse(input_str, True)[0]
 
     def _check_field(self, term, expected_field):
