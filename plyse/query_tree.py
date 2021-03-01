@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from copy import deepcopy
 
 
 class TreeNode(dict):
@@ -13,7 +12,7 @@ class TreeNode(dict):
         raise NotImplementedError()
 
     @property
-    def children(self, *args, **kwargs):
+    def children(self):
         """
         Returns all the child nodes from the itself
 
@@ -56,7 +55,7 @@ class Operand(TreeNode):
         return True
 
     @property
-    def children(self, *args, **kwargs):
+    def children(self):
         return []
 
     def leaves(self, *args, **kwargs):
@@ -111,7 +110,7 @@ class Operator(TreeNode):
         return False
 
     @property
-    def children(self, *args, **kwargs):
+    def children(self):
         return self.inputs
 
     @property
