@@ -20,13 +20,15 @@ jobs:
         run: |
           pip install -U wheel
           pip install -r requirements.txt
-          pip install -U pytest
+          pip install -U pytest coverage
           pip install .
       - name: Run mypy
         if: "matrix.python-version != '2.7' && matrix.python-version != 'pypy2'"
         run: |
             pip install -U mypy
             mypy -p plyse --ignore-missing-imports
-      - name: Run tests
+      - name: Run tests & coverage
         run: |
-          pytest -v --color=yes
+          coverage erase
+          coverage run -m pytest -v --color=yes
+          coverage report -m
