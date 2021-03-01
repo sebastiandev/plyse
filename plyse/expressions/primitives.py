@@ -72,9 +72,9 @@ class BaseWord(Word, BaseType):
 
     name = 'base_word'
 
-    def __init__(self, chars, precendece):
+    def __init__(self, chars, precedence):
         Word.__init__(self, chars)
-        BaseType.__init__(self, precendece)
+        self.precedence = precedence
 
 
 class SimpleWord(BaseWord):

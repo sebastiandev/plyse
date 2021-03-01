@@ -192,3 +192,9 @@ class Term(dict):
     @property
     def value_type(self):
         return self[self.VAL_TYPE] if self.VAL_TYPE in self else None
+
+
+__all__ = (
+    "TermParserFactory",
+    "TermParser",
+)
