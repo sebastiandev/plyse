@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from plyse.expressions.primitives import *
+from pyparsing import ParseResults
 
 
 class PrimitiveTester(unittest.TestCase):
@@ -11,6 +12,9 @@ class PrimitiveTester(unittest.TestCase):
             if exp:
                 output = primitive.parseString(inp)
                 for n, o in enumerate(output):
+                    # Workaround for container primitive due Group returns not a list but a ParseResults
+                    if isinstance(o, ParseResults):
+                        o = o.asList()
                     self.assertEqual(exp[n], o)
             else:
                 self.assertRaises(ParseException, primitive.parseString, inp)
@@ -77,11 +81,23 @@ class PrimitiveTester(unittest.TestCase):
 
     def test_integer_comparisson(self):
         ic = IntegerComparison()
-        self.assert_parsed_output(ic, {'<10': ['<', '10'], '<=10': ['<=', '10'], '>10': ['>', '10'], '>=10': ['>=', '10'], '">e"': None})
+        self.assert_parsed_output(ic, {'<10': ['<', '10'], '<=10': ['<=', '10'], '>10': [
+                                  '>', '10'], '>=10': ['>=', '10'], '">e"': None})
 
     def test_string_proximity(self):
         sp = StringProximity()
         self.assert_parsed_output(sp, {"'hello world'~3": ['hello world', '~', '3']})
+
+    def test_container(self):
+        c = Container()
+        self.assert_parsed_output(c, {
+            "[a]": [["a"]],
+            "[aa,     bbbb]": [["aa", "bbbb"]],
+            "[a,b]": [["a", "b"]],
+            "[a,bbbbb]": [["a", "bbbbb"]],
+            "[1, a,]": [["1", "a"]],
+            "[a, '1']": [["a", "1"]]})
+
 
 if __name__ == '__main__':
     unittest.main()

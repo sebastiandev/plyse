@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import unittest
+from pyparsing import ParseResults
 from plyse.expressions.terms import *
 from plyse.expressions.primitives import *
 
@@ -11,11 +12,15 @@ class TermsTester(unittest.TestCase):
         for inp in input_list:
             output = primitive.parseString(inp)[0]
             for o in output:
+                # Workaround for ParseResults in Container primitive
+                if isinstance(o, ParseResults):
+                    o = str(o.asList())
                 self.assertIn(o, inp)
 
     def test_term(self):
-        t = TermFactory.build_term(Field(), [Integer(), QuotedString(), PartialString()])
-        self.assert_parsed_output(t, ["name:tester", "age:30", "nickname:'test'", "freetext"])
+        t = TermFactory.build_term(Field(), [Integer(), QuotedString(), PartialString(), Container()])
+        self.assert_parsed_output(t, [
+            "name:tester", "age:30", "nickname:'test'", "freetext", "department:['qa', 'dev']"])
 
     def test_keyword(self):
         k = KeywordTerm("has", ["message", "comment", "notification"])
@@ -41,6 +46,6 @@ class TermsTester(unittest.TestCase):
         k = KeywordTerm("has", ["message", "comment", "notification"], allow_other_values=False)
         self.assertRaises(ParseException, k.parseString, "has:10")
 
+
 if __name__ == '__main__':
     unittest.main()
-

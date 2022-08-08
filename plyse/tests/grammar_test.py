@@ -185,5 +185,6 @@ class GrammarTester(unittest.TestCase):
         self._check_values(r[4][2][0], expected_val="NOT")
         self._check_values(r[4][2][1], "e", 0, Term.INT)
 
+
 if __name__ == '__main__':
     unittest.main()

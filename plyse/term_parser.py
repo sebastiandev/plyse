@@ -146,6 +146,11 @@ class TermParser(object):
             return self._build_value_data([tokens[0][Term.VAL], tokens[2][Term.VAL]],
                                           Term.RANGE % tokens[0][Term.VAL_TYPE])
 
+    def container_parse(self, string, location, tokens):
+        if tokens:
+            value = [one[Term.VAL] for one in tokens[0]]
+            return self._build_value_data(value, Term.CONTAINER)
+
 
 class Term(dict):
 
@@ -159,6 +164,7 @@ class Term(dict):
     GREATER_EQUAL_THAN = 'greater_equal_than'
     LOWER_THAN = 'lower_than'
     LOWER_EQUAL_THAN = 'lower_equal_than'
+    CONTAINER = "container"
 
     # field types
     KEYWORD = 'keyword'

@@ -3,7 +3,7 @@
 import unittest
 from plyse.grammar import GrammarFactory
 from plyse.term_parser import TermParserFactory, Term
-from plyse.expressions.primitives import IntegerComparison
+from plyse.expressions.primitives import IntegerComparison, Container
 
 
 class TermParserTester(unittest.TestCase):
@@ -22,6 +22,11 @@ class TermParserTester(unittest.TestCase):
         term_parser = TermParserFactory.build_from_conf(conf)
         g = GrammarFactory.build_default(term_parser)
         g.add_value_type(IntegerComparison(term_parser.integer_comparison_parse))
+        g.add_value_type(Container(
+            parse_method=term_parser.container_parse,
+            int_parse_method=term_parser.integer_parse,
+            part_str_parse_method=term_parser.partial_string_parse,
+            qstr_parse_method=term_parser.quoted_string_parse))
         self.assertTrue(g.parse(input_str, True))
 
         return g.parse(input_str, True)[0]
@@ -78,6 +83,17 @@ class TermParserTester(unittest.TestCase):
 
         r = self._init_and_parse("age:<=18")
         self._check_values(r, 'age', 18, Term.LOWER_EQUAL_THAN)
+
+    def test_filed_container(self):
+        r = self._init_and_parse("field:[a,b,c]")
+        self._check_values(r, 'field', ["a", "b", "c"], Term.CONTAINER)
+
+        r = self._init_and_parse("field:[1,b,c,]")
+        self._check_values(r, 'field', [1, "b", "c"], Term.CONTAINER)
+
+        r = self._init_and_parse("field:[aa,b,'1',]")
+        self._check_values(r, 'field', ["aa", "b", "1"], Term.CONTAINER)
+
 
 if __name__ == '__main__':
     unittest.main()

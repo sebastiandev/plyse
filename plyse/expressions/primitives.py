@@ -2,7 +2,7 @@
 from pyparsing import (Literal, Word, MatchFirst, CaselessKeyword, Regex, QuotedString as QString,
                        Suppress, Optional, Group, FollowedBy, Combine,
                        operatorPrecedence, opAssoc, ParseException,
-                       ParserElement, alphanums, And, OneOrMore)
+                       ParserElement, alphanums, And, OneOrMore, delimitedList)
 
 from ..util import load_module
 
@@ -17,19 +17,28 @@ class PrimitiveFactory(object):
     def build_from_conf(conf, parser):
         _cls = load_module(conf['class'])
 
-        if 'parse_method' in conf:
-            _kwargs = {'parse_method': getattr(parser, conf['parse_method'])}
+        _kwargs = {}
+        if not (set(conf.keys() - ['class']) <= set(_cls.__init__.__code__.co_varnames[1:])):
+            extra_parameters = set(conf.keys()) - (set(conf.keys()) & set(_cls.__init__.__code__.co_varnames[1:]))
+            raise PrimitiveFactoryError(
+                'Invalid primitive definition: configuration for class {} has extra parameters'.format(
+                    _cls.__name__, extra_parameters))
 
-        elif 'range_parse_method' in conf:
-            _kwargs = {
-                'range_parse_method': getattr(parser, conf['range_parse_method']),
-                'item_parse_method': getattr(parser, conf['item_parse_method'])
-            }
+        for var in _cls.__init__.__code__.co_varnames[1:]:
+            if var not in conf:
+                continue
 
-        else:
-            raise PrimitiveFactoryError("Invalid Primitive definition, parsing method invalid or not defined.")
+            if var.endswith('parse_method'):
+                try:
+                    _kwargs[var] = getattr(parser, conf[var])
+                except AttributeError:
+                    raise PrimitiveFactoryError(
+                        'Invalid Primitive definition. Parser {} does not have a method {}'.format(parser, conf[var]))
 
-        return _cls(precedence=conf['precedence'], **_kwargs)
+                continue
+
+            _kwargs[var] = conf[var]
+        return _cls(**_kwargs)
 
 
 def concatenate(elems, operator='OR', class_to_embed_elem=None):
@@ -153,6 +162,32 @@ class Integer(Regex, BaseType):
 
     def __init__(self, parse_method=None, precedence=6):
         Regex.__init__(self, r"\d+")
+        BaseType.__init__(self, precedence)
+
+        if parse_method:
+            self.addParseAction(parse_method)
+
+
+class Container(And, BaseType):
+
+    name = 'container'
+
+    def __init__(self,
+                 parse_method=None,
+                 int_parse_method=None,
+                 part_str_parse_method=None,
+                 qstr_parse_method=None,
+                 delim=',',
+                 precedence=8):
+        value = Integer(int_parse_method) ^ PartialString(part_str_parse_method) ^ QuotedString(qstr_parse_method)
+        And.__init__(
+            self,
+            [
+                Suppress(Literal('['))
+                + Group(delimitedList(value, delim=delim) + Optional(Suppress(Literal(delim))))
+                + Suppress(Literal(']'))
+            ],
+        )
         BaseType.__init__(self, precedence)
 
         if parse_method:

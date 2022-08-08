@@ -9,7 +9,7 @@ conf = {
     'term_parser': 'plyse.term_parser.TermParser',
     'default_fields': ['default'],
     'aliases': {},
-    'operators': [ 
+    'operators': [
         {'not': {
             'implicit': False,
             'symbols': ['not', '-', '!']
@@ -54,7 +54,15 @@ conf = {
                 'precedence': 5,
                 'range_parse_method': 'range_parse',
                 'item_parse_method': 'integer_parse'
-            }
+            },
+            {
+                "class": "plyse.expressions.primitives.Container",
+                "precedence": 10,
+                "parse_method": "container_parse",
+                "int_parse_method": "integer_parse",
+                "part_str_parse_method": "partial_string_parse",
+                "qstr_parse_method": "quoted_string_parse",
+            },
         ]
     }
 }
@@ -136,6 +144,7 @@ class ConfigurableGrammarTester(GrammarTester):
 
         r = g.parse("is:something")
         self._check_values(r[0], 'is', 'something', Term.PARTIAL_STRING)
+
 
 if __name__ == "__main__":
     unittest.main()
