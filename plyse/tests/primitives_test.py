@@ -16,6 +16,7 @@ class PrimitiveTester(unittest.TestCase):
                     if isinstance(o, ParseResults):
                         o = o.asList()
                     self.assertEqual(exp[n], o)
+                self.assertEqual(len(exp), len(output))
             else:
                 self.assertRaises(ParseException, primitive.parseString, inp)
 
@@ -69,10 +70,10 @@ class PrimitiveTester(unittest.TestCase):
         self.assert_parsed_output(f, {'name>test': ['name', '>'], 'age>10': ['age', '>'], 'aa': None})
 
     def test_multi_field(self):
-        mf = Field()
+        mf = MultiField()
         self.assert_parsed_output(mf, {'first:name:test': ['first', ':', 'name', ':'], 'age:10': ['age', ':']})
 
-        mf = Field(field_separator='>')
+        mf = MultiField(field_separator='>')
         self.assert_parsed_output(mf, {'first>name>test': ['first', '>', 'name', '>'], 'age>10': ['age', '>']})
 
     def test_any(self):
