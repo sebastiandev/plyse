@@ -3,7 +3,10 @@
 import unittest
 from plyse.grammar import GrammarFactory
 from plyse.term_parser import TermParserFactory, Term
-from plyse.expressions.primitives import IntegerComparison, Container
+from plyse.expressions.primitives import (IntegerComparison, Container, MultiField, Integer,
+                                          IntegerRange, PartialString, QuotedString)
+from plyse.expressions.operators import Operator
+from plyse.expressions.terms import TermFactory
 
 
 class TermParserTester(unittest.TestCase):
@@ -20,7 +23,14 @@ class TermParserTester(unittest.TestCase):
         }
 
         term_parser = TermParserFactory.build_from_conf(conf)
-        g = GrammarFactory.build_default(term_parser)
+        values = [IntegerRange(range_parse_method=term_parser.range_parse, item_parse_method=term_parser.integer_parse),
+                  Integer(parse_method=term_parser.integer_parse),
+                  PartialString(parse_method=term_parser.partial_string_parse),
+                  QuotedString(parse_method=term_parser.quoted_string_parse)]
+        term = TermFactory.build_term(MultiField(parse_method=term_parser.multifield_parse),
+                                      values=values,
+                                      parse_method=term_parser.term_parse)
+        g = GrammarFactory.build(term=term, parser=term_parser, operators=GrammarFactory.default_operators)
         g.add_value_type(IntegerComparison(term_parser.integer_comparison_parse))
         g.add_value_type(Container(
             parse_method=term_parser.container_parse,
@@ -42,6 +52,14 @@ class TermParserTester(unittest.TestCase):
     def test_default_field_partial_text(self):
         r = self._init_and_parse("texto")
         self._check_values(r, ['name', 'description'], "texto", Term.PARTIAL_STRING)
+
+    def test_default_multifield_partial_text(self):
+        r = self._init_and_parse("texto:texto3:texto4")
+        self._check_values(r, 'texto:texto3', "texto4", Term.PARTIAL_STRING)
+
+    def test_default_multifield_int(self):
+        r = self._init_and_parse("texto:texto3:1")
+        self._check_values(r, 'texto:texto3', 1, Term.INT)
 
     def test_default_field_partial_text_with_wildcard(self):
         r = self._init_and_parse("'texto*'")

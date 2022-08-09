@@ -22,6 +22,11 @@ class TermsTester(unittest.TestCase):
         self.assert_parsed_output(t, [
             "name:tester", "age:30", "nickname:'test'", "freetext", "department:['qa', 'dev']"])
 
+    def test_multifiled_term(self):
+        t = TermFactory.build_term(MultiField(), [Integer(), QuotedString(), PartialString(), Container()])
+        self.assert_parsed_output(t, [
+            "name:last:tester", "age:30", "nickname:'test'", "freetext", "department:['qa', 'dev']"])
+
     def test_keyword(self):
         k = KeywordTerm("has", ["message", "comment", "notification"])
 
