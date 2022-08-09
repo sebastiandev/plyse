@@ -106,11 +106,28 @@ class TermParser(object):
         """
         if tokens:
             fields = [f for f in "".join(tokens).split(":") if f]
-            t = fields if len(fields) > 1 else fields[0]
+            t = fields[0]
 
             field_value = self._field_name_aliases.get(t, t)
 
             return self._build_field_data(field_value, Term.ATTRIBUTE)
+
+    def multifield_parse(self, string, location, tokens):
+        """
+        Fields are whatever comes before a separator and they are usually use for attribute/property matching. The value
+        of a field is parsed separately form the field name and it depends on the definition of the grammar and the
+        accepted/supported values. Thus this method receives a token list with <field name> <separator> <field name>.
+
+        Combined or nested fields are allowed, the pattern would be:
+            <field name> <separator> <field name> <separator> ...
+
+            > ej: address:zip:ABC1234 => token list would be ['address', ':', 'zip']
+        """
+        if tokens:
+            fields = [f for f in "".join(tokens).split(":") if f]
+            field_value = self._field_name_aliases.get(":".join(fields), ":".join(fields))
+
+            return self._build_field_data(field_value, Term.MULTI_ATTRIBUTE)
 
     def integer_parse(self, string, location, tokens):
         if tokens:
@@ -146,6 +163,11 @@ class TermParser(object):
             return self._build_value_data([tokens[0][Term.VAL], tokens[2][Term.VAL]],
                                           Term.RANGE % tokens[0][Term.VAL_TYPE])
 
+    def container_parse(self, string, location, tokens):
+        if tokens:
+            value = [one[Term.VAL] for one in tokens[0]]
+            return self._build_value_data(value, Term.CONTAINER)
+
 
 class Term(dict):
 
@@ -159,11 +181,13 @@ class Term(dict):
     GREATER_EQUAL_THAN = 'greater_equal_than'
     LOWER_THAN = 'lower_than'
     LOWER_EQUAL_THAN = 'lower_equal_than'
+    CONTAINER = "container"
 
     # field types
     KEYWORD = 'keyword'
     DEFAULT = 'default'
     ATTRIBUTE = 'attribute'
+    MULTI_ATTRIBUTE = 'multi_attribute'
 
     # term keys
     FIELD = 'field'

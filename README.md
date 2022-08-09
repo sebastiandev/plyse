@@ -263,10 +263,11 @@ Plyse ships with a set of default types that should cover the basic needs pretty
 - IntegerComparison
 - Field
 - MultiField
+- Container
 
 The grammar can be manipulated programatically, removing or adding types used for the terms:
 ```python
-from plyse import GrammarFactory, IntegerComparison, QueryParser, Query
+from plyse import GrammarFactory, IntegerComparison, QueryParser, Query, Container
 
 grammar = GrammarFactory.build_default()
 grammar.value_types
@@ -278,16 +279,28 @@ grammar.value_types
 
 grammar.remove_type('integer_range')
 grammar.add_value_type(IntegerComparison(grammar.term_parser.integer_comparison_parse))
+grammar.add_value_type(Container(
+  grammar.term_parser.container_parse,
+  grammar.term_parser.integer_parse,
+  grammar.term_parser.partial_string_parse,
+  grammar.term_parser.quoted_string_parse
+  ))
 
 parser = QueryParser(grammar)
-q = qp.parse("age:>18")
+q = parser.parse("age:>18 name:[John, Doe]")
 
 print q.terms()
 
 #[{'field': 'age',
-#  'field_type': 'attribute',
+#  'field_type':
+#  'attribute',
 #  'val': 18,
-#  'val_type': 'greater_than'}]
+#  'val_type': 'greater_than'},
+# {'field': 'name',
+#  'field_type':
+#  'attribute',
+#  'val': ['John', 'Doe'],
+#  'val_type': 'container'}]
 ```
 
 For more examples take a look at the different tests covering the funcionality of each module [here](https://github.com/sebastiandev/plyse/tree/master/plyse/tests)

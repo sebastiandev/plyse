@@ -13,6 +13,11 @@ class GrammarError(Exception):
 
 class GrammarFactory(object):
 
+    default_operators = [
+        Operator("not", ['!', '-', 'not']),
+        Operator('and', ['+', 'and']),
+        Operator('or', ['or'], True)]
+
     @staticmethod
     def build(term, parser, operators, keywords=None):
         return Grammar(term=term, operators=operators, term_parser=parser, keywords=keywords)
@@ -20,10 +25,9 @@ class GrammarFactory(object):
     @staticmethod
     def build_default(term_parser=None):
         t_parser = term_parser or TermParserFactory.build_default()
-        operators = [Operator("not", ['!', '-', 'not']), Operator('and', ['+', 'and']), Operator('or', ['or'], True)]
         term = TermFactory.build_default_term(t_parser)
 
-        return Grammar(operators=operators, term=term, keywords=[], term_parser=t_parser)
+        return Grammar(operators=GrammarFactory.default_operators, term=term, keywords=[], term_parser=t_parser)
 
     @staticmethod
     def build_from_conf(conf):
@@ -127,7 +131,8 @@ class Grammar(object):
 
     def add_value_type(self, value):
         if not isinstance(value, ParserElement):
-            raise GrammarError("Value types should be PyParsing ParserElements or plyse.expressions.primitives.BaseType")
+            raise GrammarError(
+                "Value types should be PyParsing ParserElements or plyse.expressions.primitives.BaseType")
 
         new_term = TermFactory.build_term(self._term.field, self._term.values + [value], *self._term.parseAction)
         self._update_grammar(new_term)
