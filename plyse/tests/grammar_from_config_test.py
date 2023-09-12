@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
-from .grammar_test import GrammarTester
+from plyse.tests.grammar_test import GrammarTester
 from plyse.grammar import GrammarFactory
 from plyse.term_parser import Term
 
