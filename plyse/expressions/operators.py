@@ -9,5 +9,5 @@ class Operator(MatchFirst):
         symbols_ = [Literal(s) if len(s) == 1 else CaselessKeyword(s) for s in symbols]
         super(Operator, self).__init__(concatenate(symbols_, operator='OR'))
 
-        self.name = name
+        self.customName = name
         self.implicit = implicit

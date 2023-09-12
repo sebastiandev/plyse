@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pyparsing import (Literal, Word, MatchFirst, CaselessKeyword, Regex, QuotedString as QString,
                        Suppress, Optional, Group, FollowedBy, Combine,
-                       operatorPrecedence, opAssoc, ParseException,
+                       infixNotation, opAssoc, ParseException,
                        ParserElement, alphanums, And, OneOrMore)
 
 from ..util import load_module

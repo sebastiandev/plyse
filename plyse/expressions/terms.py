@@ -44,7 +44,7 @@ class KeywordTerm(And):
 
         super(KeywordTerm, self).__init__([CaselessKeyword(keyword_name) + Literal(separator) + _values])
 
-        self.name = keyword_name
+        self.customName = keyword_name
         self.values = possible_values
 
         if parse_method:
