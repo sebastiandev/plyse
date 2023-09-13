@@ -13,11 +13,8 @@ def get_version(package):
 
 setup(
     name='plyse',
-    setup_requires=[
-        'pyparsing',
-    ],
     install_requires=[
-        'pyparsing',
+        'pyparsing<=3.1.1',
     ],
     version=get_version('plyse'),
     url='https://github.com/sebastiandev/plyse',
@@ -32,7 +29,6 @@ setup(
     },
     packages=['plyse', 'plyse.expressions', 'plyse.tests'],
     test_suite='tests',
-    python_requires='>=2.6, !=3.0.*, !=3.1.*, !=3.2.*',
     keywords="search query parser lucene gmail syntax grammar",
     classifiers=[
         'Development Status :: 5 - Production/Stable',

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from .term_parser import TermParserFactory
-from .expressions.primitives import PrimitiveFactory, ParserElement, operatorPrecedence, opAssoc
+from .expressions.primitives import PrimitiveFactory, ParserElement, infixNotation, opAssoc
 from .expressions.operators import *
 from .expressions.terms import *
 
@@ -68,13 +68,13 @@ class Grammar(object):
         precedence_list = []
 
         for op in self._operators:
-            if op.name == 'not':
+            if op.customName == 'not':
                 op_def = Optional(op) if op.implicit else op
                 op_def = (op_def.setParseAction(lambda: "NOT"), 1, opAssoc.RIGHT)
-            elif op.name == 'and':
+            elif op.customName == 'and':
                 op_def = Optional(op) if op.implicit else op
                 op_def = (op_def.setParseAction(lambda: "AND"), 2, opAssoc.LEFT)
-            elif op.name == 'or':
+            elif op.customName == 'or':
                 op_def = Optional(op) if op.implicit else op
                 op_def = (op_def.setParseAction(lambda: "OR"), 2, opAssoc.LEFT)
             else:
@@ -85,7 +85,7 @@ class Grammar(object):
         # The expression has to combine operators with terms and/or keywords
         # Keywords have higher precedence over terms
         expression_elem = concatenate((self._keywords if self._keywords else []) + [self._term])
-        expression = operatorPrecedence(expression_elem, precedence_list)
+        expression = infixNotation(expression_elem, precedence_list)
 
         return expression.parseString
 
@@ -101,7 +101,7 @@ class Grammar(object):
 
     @property
     def keywords(self):
-        return [k.name for k in self._keywords]
+        return [k.customName for k in self._keywords]
 
     @property
     def value_types(self):
@@ -113,7 +113,7 @@ class Grammar(object):
 
     @property
     def operators(self):
-        return [op.name for op in self._operators]
+        return [op.customName for op in self._operators]
 
     def add_keyword(self, keyword):
         if not isinstance(keyword, KeywordTerm):
@@ -140,11 +140,11 @@ class Grammar(object):
         return self
 
     def remove_operator(self, operator_name):
-        self._update_grammar(operators=list(filter(lambda x: x.name != operator_name, self._operators)))
+        self._update_grammar(operators=list(filter(lambda x: x.customName != operator_name, self._operators)))
         return self
 
     def remove_keyword(self, keyword_name):
-        self._update_grammar(keywords=list(filter(lambda x: x.name != keyword_name, self._keywords)))
+        self._update_grammar(keywords=list(filter(lambda x: x.customName != keyword_name, self._keywords)))
         return self
 
     def parse(self, input_string, fail_if_syntax_mismatch=False):
